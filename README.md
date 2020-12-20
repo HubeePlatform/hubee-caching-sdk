@@ -86,4 +86,4 @@ var valorDoCache = await _cachingService.Get<Entidade>(key);
 
 ```
 
-Nó método **SET** podemos adicionar a informação de expiração na propriedade **expiresIn**, caso não desejar informar a expiração será determinada pelo seu valor padrão definido nas configuração.
+Nó método **SET** podemos adicionar a informação de expiração na propriedade **expiresIn**, caso não desejar informar a expiração será determinada pelo seu valor padrão definido na configuração.
