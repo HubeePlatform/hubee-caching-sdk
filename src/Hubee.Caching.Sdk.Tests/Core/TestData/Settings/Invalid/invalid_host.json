@@ -1,0 +1,9 @@
+{
+  "HubeeCachingConfig": {
+    "CacheProvider": "Redis",
+    "DefaultExpiresIn": "00:01:01",
+    "Host": "",
+    "Port": "3000",
+    "Password": "password"
+  }
+}
