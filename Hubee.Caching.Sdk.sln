@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30611.23
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4F624AB4-89E0-4D93-A3AA-1D41EA4AEE72}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hubee.Caching.Sdk", "src\Hubee.Caching.Sdk\Hubee.Caching.Sdk.csproj", "{A2C6630E-1B48-4896-9FE6-9937FAB6DD62}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hubee.Caching.Sdk.Tests", "src\Hubee.Caching.Sdk.Tests\Hubee.Caching.Sdk.Tests.csproj", "{377A8951-4FFB-4BEA-A3A4-4694253C2994}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A2C6630E-1B48-4896-9FE6-9937FAB6DD62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2C6630E-1B48-4896-9FE6-9937FAB6DD62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2C6630E-1B48-4896-9FE6-9937FAB6DD62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2C6630E-1B48-4896-9FE6-9937FAB6DD62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{377A8951-4FFB-4BEA-A3A4-4694253C2994}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{377A8951-4FFB-4BEA-A3A4-4694253C2994}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{377A8951-4FFB-4BEA-A3A4-4694253C2994}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{377A8951-4FFB-4BEA-A3A4-4694253C2994}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A2C6630E-1B48-4896-9FE6-9937FAB6DD62} = {4F624AB4-89E0-4D93-A3AA-1D41EA4AEE72}
+		{377A8951-4FFB-4BEA-A3A4-4694253C2994} = {4F624AB4-89E0-4D93-A3AA-1D41EA4AEE72}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4559C96D-3658-4B42-AF95-1FE1C3DCEAF3}
+	EndGlobalSection
+EndGlobal
