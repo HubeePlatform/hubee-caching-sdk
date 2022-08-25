@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>8.0</LangVersion>
   	<PackageId>Hubee.Caching.Sdk</PackageId>
-	  <PackageVersion>0.0.1</PackageVersion>
+	  <PackageVersion>0.0.2</PackageVersion>
 	  <Authors>Luiz Henrique Miranda de Assis</Authors>
 	  <Company>Hubee</Company>
     <RepositoryUrl>https://github.com/HubeePlatform/hubee-caching-sdk/</RepositoryUrl>

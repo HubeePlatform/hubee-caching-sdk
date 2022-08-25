@@ -53,6 +53,7 @@ namespace Hubee.Caching.Sdk.Infra.Redis
 
         private RedisClient GetRedisClient()
         {
+            _cachingConfig.Value.GetValueInEnvironmentVariable();
             return new RedisClient(_cachingConfig.Value.Host, int.Parse(_cachingConfig.Value.Port), _cachingConfig.Value.Password);
         }
     }
