@@ -1,10 +1,13 @@
 ﻿using Hubee.Caching.Sdk.Core.Interfaces;
 using System.Threading.Tasks;
-using ServiceStack.Redis;
 using System;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Hubee.Caching.Sdk.Core.Models;
+using StackExchange.Redis;
+using System.Text.Json;
+
+
 
 namespace Hubee.Caching.Sdk.Infra.Redis
 {
@@ -25,8 +28,13 @@ namespace Hubee.Caching.Sdk.Infra.Redis
         {
             try
             {
-                using var redisClient = GetRedisClient();
-                return await Task.FromResult(redisClient.Get<T>(key));
+                var redisClient = GetRedisClient();
+                var value = Task.FromResult(await redisClient.StringGetAsync(key)).ToString();
+
+                if (value == string.Empty)
+                    return default;
+
+                return JsonSerializer.Deserialize<T>(value);
             }
             catch (Exception ex)
             {
@@ -41,8 +49,11 @@ namespace Hubee.Caching.Sdk.Infra.Redis
             {
                 var expiresInCache = expiresIn ?? _cachingConfig.Value.GetDefaultExpiresIn();
 
-                using var redisClient = GetRedisClient();
-                await Task.FromResult(redisClient.Set<T>(key, value, expiresInCache));
+                var redisClient = GetRedisClient();
+
+                var serializedValue = JsonSerializer.Serialize(value);
+
+                await Task.FromResult(redisClient.StringSetAsync(key, serializedValue, expiresInCache));
             }
             catch (Exception ex)
             {
@@ -51,10 +62,19 @@ namespace Hubee.Caching.Sdk.Infra.Redis
             }
         }
 
-        private RedisClient GetRedisClient()
+        private IDatabase GetRedisClient()
         {
             _cachingConfig.Value.GetValueInEnvironmentVariable();
-            return new RedisClient(_cachingConfig.Value.Host, int.Parse(_cachingConfig.Value.Port), _cachingConfig.Value.Password);
+
+            var configurationOptions = new ConfigurationOptions
+            {
+                EndPoints = { $"{_cachingConfig.Value.Host}:{_cachingConfig.Value.Port}" },
+                Password = _cachingConfig.Value.Password,
+                AbortOnConnectFail = false, 
+                ConnectRetry = 5, 
+            };
+
+            return new Lazy<ConnectionMultiplexer>(() => ConnectionMultiplexer.Connect(configurationOptions)).Value.GetDatabase();
         }
     }
 }
