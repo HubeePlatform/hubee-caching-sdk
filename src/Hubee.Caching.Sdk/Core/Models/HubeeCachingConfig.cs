@@ -17,6 +17,16 @@ namespace Hubee.Caching.Sdk.Core.Models
             return TimeSpan.Parse(this.DefaultExpiresIn);
         }
 
+        public string GetConnectionString()
+        {
+            if (!string.IsNullOrEmpty(Password))
+            {
+                return $"{Host}:{Port},password={Password}";
+            }
+
+            return $"{Host}:{Port}";
+        }
+
         public HubeeCachingConfig GetValueInEnvironmentVariable()
         {
             if (!string.IsNullOrEmpty(this.Host) && !string.IsNullOrEmpty(this.Port) && !string.IsNullOrEmpty(this.Password))

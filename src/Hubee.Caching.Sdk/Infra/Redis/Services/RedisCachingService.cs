@@ -1,10 +1,12 @@
 ﻿using Hubee.Caching.Sdk.Core.Interfaces;
 using System.Threading.Tasks;
-using ServiceStack.Redis;
 using System;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Hubee.Caching.Sdk.Core.Models;
+using StackExchange.Redis;
+using System.Text.Json;
+using Hubee.Caching.Sdk.Core.Helpers;
 
 namespace Hubee.Caching.Sdk.Infra.Redis
 {
@@ -25,8 +27,12 @@ namespace Hubee.Caching.Sdk.Infra.Redis
         {
             try
             {
-                using var redisClient = GetRedisClient();
-                return await Task.FromResult(redisClient.Get<T>(key));
+                string jsonData = await GetRedisDatabase().StringGetAsync(key);
+
+                if (jsonData is null)
+                    return default;
+
+                return JsonSerializer.Deserialize<T>(jsonData);
             }
             catch (Exception ex)
             {
@@ -39,10 +45,14 @@ namespace Hubee.Caching.Sdk.Infra.Redis
         {
             try
             {
+                if (value is null) return;
+
                 var expiresInCache = expiresIn ?? _cachingConfig.Value.GetDefaultExpiresIn();
 
-                using var redisClient = GetRedisClient();
-                await Task.FromResult(redisClient.Set<T>(key, value, expiresInCache));
+                var redisDatabase = GetRedisDatabase();
+                string jsonData = JsonSerializer.Serialize(value);
+
+                await redisDatabase.StringSetAsync(key, jsonData, expiresInCache);
             }
             catch (Exception ex)
             {
@@ -51,10 +61,11 @@ namespace Hubee.Caching.Sdk.Infra.Redis
             }
         }
 
-        private RedisClient GetRedisClient()
+        private IDatabase GetRedisDatabase()
         {
             _cachingConfig.Value.GetValueInEnvironmentVariable();
-            return new RedisClient(_cachingConfig.Value.Host, int.Parse(_cachingConfig.Value.Port), _cachingConfig.Value.Password);
+
+            return RedisHelper.Initialize(_cachingConfig.Value).Database;
         }
     }
 }
