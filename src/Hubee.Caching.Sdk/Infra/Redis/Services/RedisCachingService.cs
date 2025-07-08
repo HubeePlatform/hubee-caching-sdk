@@ -7,6 +7,7 @@ using Hubee.Caching.Sdk.Core.Models;
 using StackExchange.Redis;
 using System.Text.Json;
 using Hubee.Caching.Sdk.Core.Helpers;
+using System.Text.Json.Serialization;
 
 namespace Hubee.Caching.Sdk.Infra.Redis
 {
@@ -14,6 +15,12 @@ namespace Hubee.Caching.Sdk.Infra.Redis
     {
         private readonly ILogger<RedisCachingService> _logger;
         private readonly IOptions<HubeeCachingConfig> _cachingConfig;
+
+        private static readonly JsonSerializerOptions _jsonOptions = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true,
+            Converters = { new JsonStringEnumConverter() }
+        };
 
         public RedisCachingService(
             ILogger<RedisCachingService> logger,
@@ -32,7 +39,7 @@ namespace Hubee.Caching.Sdk.Infra.Redis
                 if (jsonData is null)
                     return default;
 
-                return JsonSerializer.Deserialize<T>(jsonData);
+                return JsonSerializer.Deserialize<T>(jsonData, _jsonOptions);
             }
             catch (Exception ex)
             {
@@ -50,7 +57,7 @@ namespace Hubee.Caching.Sdk.Infra.Redis
                 var expiresInCache = expiresIn ?? _cachingConfig.Value.GetDefaultExpiresIn();
 
                 var redisDatabase = GetRedisDatabase();
-                string jsonData = JsonSerializer.Serialize(value);
+                string jsonData = JsonSerializer.Serialize(value, _jsonOptions);
 
                 await redisDatabase.StringSetAsync(key, jsonData, expiresInCache);
             }
