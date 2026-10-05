@@ -14,7 +14,7 @@ jobs:
       with:
         dotnet-version: 7.0.100
     - name: Pack
-      run: dotnet pack --configuration Release
+      run: dotnet pack src/Hubee.Caching.Sdk/Hubee.Caching.Sdk.csproj --configuration Release
     - name: Push to GitHub Feed
       env:
         ORG_GITHUB_PACKAGES_PASSWORD:  ${{ secrets.ORG_GITHUB_PACKAGES_PASSWORD }}
