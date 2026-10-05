@@ -1,0 +1,10 @@
+{
+  "HubeeCachingConfig": {
+    "CacheProvider": "Redis",
+    "DefaultExpiresIn": "00:01:01",
+    "Host": "localhost",
+    "Port": "3000",
+    "Password": "password",
+    "OperationTimeoutMilliseconds": 0
+  }
+}

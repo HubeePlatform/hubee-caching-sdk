@@ -29,6 +29,12 @@ Após realizar a instalação do SDK em seu projeto podemos iniciar a configura�
 | Host | host do provedor de cache |
 | Port | porta do provedor de cache |
 | Password | senha do provedor de cache |
+| OperationTimeoutMilliseconds | opcional; tempo máximo de cada operação no Redis, em milissegundos. Sem valor, vale o padrão da biblioteca (5000 ms) |
+| FailFastWhenDisconnected | opcional, padrão `false`; quando `true`, sem conexão com o Redis a operação falha na hora em vez de esperar a reconexão |
+
+Uma falha de cache nunca lança exceção: o `Get` devolve o valor padrão e o `Set` é ignorado. Para serviços em que o cache é só otimização e a resposta tem tempo limite, use `OperationTimeoutMilliseconds` baixo (por exemplo, `100`) e `FailFastWhenDisconnected` `true`, para que o Redis indisponível não atrase a resposta.
+
+A conexão com o Redis não interrompe a aplicação quando o servidor está indisponível: ela reconecta em segundo plano.
 
 **OBS:** as configurações de acesso ao provedor podem ser configuradas em variáveis de ambiente, segue abaixo os nomes:
 

@@ -11,6 +11,8 @@ namespace Hubee.Caching.Sdk.Core.Models
         public string Host { get; set; }
         public string Port { get; set; }
         public string Password { get; set; }
+        public int? OperationTimeoutMilliseconds { get; set; }
+        public bool FailFastWhenDisconnected { get; set; }
 
         public TimeSpan GetDefaultExpiresIn()
         {
@@ -45,7 +47,8 @@ namespace Hubee.Caching.Sdk.Core.Models
                             string.IsNullOrEmpty(this.Host) ||
                             !int.TryParse(this.Port, out _) ||
                             !TimeSpan.TryParse(this.DefaultExpiresIn, out _) ||
-                            string.IsNullOrEmpty(this.Password);
+                            string.IsNullOrEmpty(this.Password) ||
+                            this.OperationTimeoutMilliseconds <= 0;
 
             if (isInvalid)
                 throw new InvalidOperationException($"Please, configure appsettings with a {nameof(HubeeCachingConfig)} section");
