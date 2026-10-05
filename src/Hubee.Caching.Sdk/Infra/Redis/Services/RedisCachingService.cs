@@ -43,7 +43,7 @@ namespace Hubee.Caching.Sdk.Infra.Redis
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, ex.Message, ex.StackTrace);
+                _logger.LogError(ex, "Failed to get the cache key {Key}.", key);
                 return default;
             }
         }
@@ -63,7 +63,7 @@ namespace Hubee.Caching.Sdk.Infra.Redis
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, ex.Message, ex.StackTrace);
+                _logger.LogError(ex, "Failed to set the cache key {Key}.", key);
             }
         }
 

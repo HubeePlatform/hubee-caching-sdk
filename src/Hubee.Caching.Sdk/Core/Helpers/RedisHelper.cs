@@ -14,9 +14,26 @@ namespace Hubee.Caching.Sdk.Core.Helpers
         private RedisHelper(HubeeCachingConfig config)
         {
             _config = config;
+            _connection = ConnectionMultiplexer.Connect(CreateOptions(_config));
+        }
 
-            var connectionString = _config.GetConnectionString();
-            _connection = ConnectionMultiplexer.Connect(connectionString);
+        internal static ConfigurationOptions CreateOptions(HubeeCachingConfig config)
+        {
+            var options = ConfigurationOptions.Parse(config.GetConnectionString());
+            options.AbortOnConnectFail = false;
+
+            if (config.OperationTimeoutMilliseconds is int timeout)
+            {
+                options.AsyncTimeout = timeout;
+                options.SyncTimeout = timeout;
+            }
+
+            if (config.FailFastWhenDisconnected)
+            {
+                options.BacklogPolicy = BacklogPolicy.FailFast;
+            }
+
+            return options;
         }
 
         public static RedisHelper Initialize(HubeeCachingConfig config)
